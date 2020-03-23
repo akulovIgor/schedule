@@ -25,7 +25,7 @@ class Excel:
     def get_values(self, start, end, title):
         values = self._service.spreadsheets().values().get(
             spreadsheetId=self._spreadsheet_id,
-            range=f'{title}{start}:{end}',
+            range=f'{title}!{start}:{end}',
             majorDimension='COLUMNS'
         ).execute()
         return values.get('values', [])
@@ -58,10 +58,10 @@ class Excel:
                                                 includeGridData=True).execute()
         sheets = sheet_meta['sheets']
         data = sheets[0]['data']
-        row_data = data[0]['rowData']
-        values = row_data[0]['values']
-        user_entered_format = values[0]['userEnteredFormat']
         try:
+            row_data = data[0]['rowData']
+            values = row_data[0]['values']
+            user_entered_format = values[0]['userEnteredFormat']
             background_color = user_entered_format['backgroundColor']
         except:
             return {'red': 1.0, 'green': 1.0, 'blue': 1.0}
@@ -156,11 +156,11 @@ class Excel:
 
 test = Excel()
 #print(test.__doc__)
-#print(test.get_values('A4', 'G4'))
+print(test.get_values(start='E4', end='G4', title='Февраль'))
 #test.set_values('E10', 'E10', title='Февраль', value=[['E']])
-#print(test.find_sheet('Февраль'))
+#print(test.find_sheet('Январь'))
 #test.set_color(0,2,0,2, 'Февраль', horizontal_alignment='LEFT')
 #print(test.get_color('E11', 'Февраль'))
-print(test.get_color('E26', 'Февраль'))
+#print(test.get_color('E20', 'Февраль'))
 #test.copy_sheet()
 #test.set_title()
